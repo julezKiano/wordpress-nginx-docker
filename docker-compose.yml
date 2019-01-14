@@ -9,7 +9,8 @@ services:
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./logs/nginx:/var/log/nginx
-      - ./wordpress:/var/www/html
+      - ./client/wordpress:/var/www/html
+      - ./client/php.ini:/usr/local/etc/php/php.ini
       - ./certs:/etc/letsencrypt
       - ./certs-data:/data/letsencrypt
     links:
@@ -29,8 +30,8 @@ services:
     image: wordpress:php7.2-fpm
     container_name: wordpress
     volumes:
-      - ./wordpress-php-config/php.ini:/usr/local/etc/php/php.ini
-      - ./wordpress:/var/www/html
+      - ./client/wordpress:/var/www/html
+      - ./client/php.ini:/usr/local/etc/php/php.ini
     environment:
       - WORDPRESS_DB_NAME=wordpress
       - WORDPRESS_TABLE_PREFIX=wp_
