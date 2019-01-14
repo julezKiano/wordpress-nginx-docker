@@ -4,3 +4,5 @@ certs-data/
 logs/
 mysql/
 wordpress/
+theme-original/
+.DS_Store
