@@ -1,10 +1,10 @@
 server {
     listen      80;
     listen [::]:80;
-    server_name DOMAIN_NAME;
+    server_name localhost;
 
     location / {
-        rewrite ^ https://$host$request_uri? permanent;
+        rewrite ^ https://$host$request_uri? redirect;
     }
 
     location ^~ /.well-known {
@@ -16,7 +16,7 @@ server {
 server {
     listen      443           ssl http2;
     listen [::]:443           ssl http2;
-    server_name               DOMAIN_NAME www.DOMAIN_NAME;
+    server_name               localhost www.localhost;
 
 
     add_header                Strict-Transport-Security "max-age=31536000" always;
@@ -38,9 +38,12 @@ server {
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
 
-    ssl_certificate           /etc/letsencrypt/live/DOMAIN_NAME/fullchain.pem;
-    ssl_certificate_key       /etc/letsencrypt/live/DOMAIN_NAME/privkey.pem;
-    ssl_trusted_certificate   /etc/letsencrypt/live/DOMAIN_NAME/chain.pem;
+    client_max_body_size 512M;
+    fastcgi_read_timeout 600;
+    
+    ssl_certificate           /etc/letsencrypt/live/localhost/fullchain.pem;
+    ssl_certificate_key       /etc/letsencrypt/live/localhost/privkey.pem;
+    # ssl_trusted_certificate   /etc/letsencrypt/live/localhost/chain.pem;
 
     location / {
         try_files $uri $uri/ /index.php?$args;
