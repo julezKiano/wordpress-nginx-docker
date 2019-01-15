@@ -7,11 +7,11 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - ./logs/nginx:/var/log/nginx
+      - ./client/config/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./client/config/certs:/etc/letsencrypt
+      - ./client/config/certs-data:/data/letsencrypt
       - ./client/wordpress:/var/www/html
-      - ./certs:/etc/letsencrypt
-      - ./certs-data:/data/letsencrypt
+      - ./logs/nginx:/var/log/nginx
     links:
       - wordpress
     restart: always
@@ -29,8 +29,8 @@ services:
     image: wordpress:php7.2-fpm
     container_name: wordpress
     volumes:
-      - ./wordpress:/var/www/html
-      - ./client/config/php.ini:/usr/local/etc/php/php.ini
+      - ./client/wordpress:/var/www/html
+      - ./client/config/php/php.ini:/usr/local/etc/php/php.ini
     environment:
       - WORDPRESS_DB_NAME=wordpress
       - WORDPRESS_TABLE_PREFIX=wp_
